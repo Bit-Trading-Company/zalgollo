@@ -1,0 +1,10 @@
+{
+  "name": "zalgollo",
+  "version": "0.1.0",
+  "description": "Craft zalgo / glitch text with Unicode combining marks, styled alphabets, cleaning and Unicode X-ray.",
+  "author": { "name": "Bit Trading Company", "url": "https://bit-trading-company.com" },
+  "homepage": "https://bit-trading-company.com/zalgollo/",
+  "repository": "https://github.com/Bit-Trading-Company/zalgollo",
+  "license": "MIT",
+  "keywords": ["zalgo", "glitch", "unicode", "text-art", "mcp"]
+}

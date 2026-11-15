@@ -1,0 +1,19 @@
+# Zalgollo API
+
+> Zalgo / glitch text for agents: stack Unicode combining marks on letters with presets, per-zone counts and silhouettes; convert to styled Unicode alphabets; clean and X-ray weird text. No key, CORS enabled.
+
+Web studio: https://bit-trading-company.com/zalgollo/
+Source: https://github.com/Bit-Trading-Company/zalgollo
+
+## MCP
+Streamable HTTP at /mcp — `claude mcp add --transport http zalgollo https://zalgollo.vercel.app/mcp`
+Tools: zalgo_text, style_text, clean_text, inspect_text, zalgo_options.
+
+## REST
+- GET|POST /api/zalgo?text=…&preset=crown|classic|drip|…&above=&middle=&below=&sets=classic,cyrillic&shape=mountain&shapeHeight=20&style=bold&seed=42&format=text|json
+- GET|POST /api/style?text=…&style=fraktur (style=all for every style; format=json)
+- GET|POST /api/clean?text=…&marks=true&invisible=true&normalize=NFKC
+- GET|POST /api/inspect?text=… → JSON code points with names and stats
+- GET /api/options → presets, mark sets, zones, styles, shapes
+
+Notes: default marks are the classic U+0300–036F block, which renders in every font. Output is capped at 60,000 code points.

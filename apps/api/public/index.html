@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zalgollo API &amp; MCP server — glitch text for agents</title>
+    <meta name="description" content="Free zalgo / glitch text API and MCP server: presets, silhouettes, styled alphabets, cleaning and Unicode X-ray. No key." />
+    <style>
+      :root { color-scheme: dark; --bg: #07060a; --panel: #110f17; --line: #262130; --text: #ece8f2; --muted: #8e879c; --hot: #ff2bd6; --cold: #29f0ff; --mono: ui-monospace, Menlo, Consolas, monospace; }
+      body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.6 ui-sans-serif, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+      main { max-width: 900px; margin: 0 auto; padding: 60px 20px 80px; }
+      a { color: var(--cold); }
+      h1 { font-size: 64px; letter-spacing: -0.04em; margin: 30px 0 10px; line-height: 2; text-shadow: -2px 0 var(--hot), 2px 0 var(--cold); }
+      h2 { margin-top: 44px; }
+      .lead { color: var(--muted); font-size: 18px; }
+      pre { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; overflow-x: auto; font: 13px var(--mono); }
+      table { width: 100%; border-collapse: collapse; font-size: 14px; }
+      th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+      th { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+      td code { color: var(--hot); }
+      #try { width: 100%; padding: 10px 12px; font-size: 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); color: var(--text); }
+      #out { font-size: 34px; line-height: 2.6; min-height: 100px; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1 id="title">zalgollo</h1>
+      <p class="lead">Glitch text for agents and apps. The web studio lives at <a href="https://bit-trading-company.com/zalgollo/">bit-trading-company.com/zalgollo</a>.</p>
+      <input id="try" value="type here" aria-label="Try it" />
+      <div id="out"></div>
+
+      <h2>MCP</h2>
+      <pre><code>claude mcp add --transport http zalgollo <span class="origin"></span>/mcp</code></pre>
+      <table>
+        <tr><th>Tool</th><th>What it does</th></tr>
+        <tr><td><code>zalgo_text</code></td><td>Glitch text: presets, per-zone counts, silhouettes (shape), styled alphabets, seeds.</td></tr>
+        <tr><td><code>style_text</code></td><td>Unicode alphabets: bold, fraktur, script, circled, fullwidth, upside-down…</td></tr>
+        <tr><td><code>clean_text</code></td><td>Strip zalgo marks and invisible characters, fold styled letters.</td></tr>
+        <tr><td><code>inspect_text</code></td><td>X-ray: every code point with its Unicode name.</td></tr>
+        <tr><td><code>zalgo_options</code></td><td>List presets, mark sets, styles and shapes.</td></tr>
+      </table>
+
+      <h2>REST</h2>
+      <pre><code>curl "<span class="origin"></span>/api/zalgo?text=hello&amp;preset=crown"
+curl "<span class="origin"></span>/api/zalgo?text=hello&amp;above=8&amp;below=3&amp;seed=42&amp;format=json"
+curl "<span class="origin"></span>/api/zalgo?text=mountain&amp;shape=mountain&amp;shapeHeight=20"
+curl "<span class="origin"></span>/api/style?text=hello&amp;style=fraktur"
+curl "<span class="origin"></span>/api/clean?text=h%CC%B7%CD%9Di"
+curl "<span class="origin"></span>/api/inspect?text=h%CC%B7i"
+curl "<span class="origin"></span>/api/options"</code></pre>
+      <table>
+        <tr><th>/api/zalgo param</th><th>Values</th></tr>
+        <tr><td><code>text</code></td><td>Required, up to 1000 characters</td></tr>
+        <tr><td><code>preset</code></td><td>whisper, classic, he-comes, crown, drip, strike, halo, bridges, letters, thai, monolith, static, native, chaos</td></tr>
+        <tr><td><code>above</code> <code>middle</code> <code>below</code> <code>enclose</code> <code>bridge</code> <code>other</code></td><td>Average marks per letter in each zone (0–100)</td></tr>
+        <tr><td><code>intensity</code> <code>density</code> <code>jitter</code></td><td>Scale counts · share of letters (0–1) · variation (0–1)</td></tr>
+        <tr><td><code>sets</code></td><td>Comma list: classic (default), supplement, extended, symbols, half, cyrillic, letters, thai, indic, semitic, tibetan, musical, halos, enclosing, all</td></tr>
+        <tr><td><code>shape</code> <code>shapeHeight</code> <code>shapeZone</code></td><td>flat, wave, ramp, fade, mountain, valley, dome, spikes, heartbeat, skyline, noise, walk, equalizer · peak height · both/above/below</td></tr>
+        <tr><td><code>style</code></td><td>bold, italic, script, fraktur, double-struck, sans, monospace, fullwidth, small-caps, circled, squared, upside-down, …</td></tr>
+        <tr><td><code>scramble</code></td><td>Comma list of Unicode blocks to swap letters for (Runic, Braille Patterns, …)</td></tr>
+        <tr><td><code>seed</code> · <code>format</code></td><td>Reproducible output · text (default) or json</td></tr>
+      </table>
+      <p>Source: <a href="https://github.com/Bit-Trading-Company/zalgollo">github.com/Bit-Trading-Company/zalgollo</a> · <a href="/llms.txt">/llms.txt</a></p>
+    </main>
+    <script>
+      for (const el of document.querySelectorAll('.origin')) el.textContent = location.origin;
+      const input = document.getElementById('try'), out = document.getElementById('out');
+      let t;
+      const go = () => fetch('/api/zalgo?preset=classic&text=' + encodeURIComponent(input.value || ' ')).then((r) => r.text()).then((s) => (out.textContent = s));
+      input.addEventListener('input', () => { clearTimeout(t); t = setTimeout(go, 150); });
+      go();
+      fetch('/api/zalgo?text=zalgollo&preset=classic&seed=7').then((r) => r.text()).then((s) => (document.getElementById('title').textContent = s));
+    </script>
+  </body>
+</html>

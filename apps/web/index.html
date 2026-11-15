@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Zalgollo — Zalgo &amp; Glitch Text Generator, crafted by hand</title>
+    <meta name="description" content="Craft zalgo / glitch text on purpose. Paint marks onto letters, sketch silhouettes with stacked diacritics, choose from all 2,103 Unicode combining marks, style alphabets, invisible ink and other forbidden Unicode tricks. Copy anywhere." />
+    <meta name="keywords" content="zalgo text generator, glitch text, cursed text, creepy text, combining characters, unicode text art, fancy text, upside down text, invisible character, text editor" />
+    <link rel="canonical" href="https://bit-trading-company.com/zalgollo/" />
+    <meta name="theme-color" content="#07060a" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Zalgollo" />
+    <meta property="og:title" content="Zalgollo — glitch text, crafted by hand" />
+    <meta property="og:description" content="Paint, sketch and sculpt zalgo text with all 2,103 Unicode combining marks." />
+    <meta property="og:url" content="https://bit-trading-company.com/zalgollo/" />
+    <meta property="og:image" content="https://bit-trading-company.com/zalgollo/og.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Zalgollo",
+        "url": "https://bit-trading-company.com/zalgollo/",
+        "applicationCategory": "DesignApplication",
+        "operatingSystem": "Any",
+        "description": "Zalgo and glitch text editor: paint, sketch and sculpt text with Unicode combining marks, styled alphabets and invisible characters.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+        "publisher": { "@type": "Organization", "name": "Bit Trading Company", "url": "https://bit-trading-company.com/" }
+      }
+    </script>
+    <script>
+      try { const t = localStorage.getItem('zalgollo:theme'); if (t) document.documentElement.dataset.theme = t; } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#studio">Skip to the studio</a>
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="Zalgollo home"><span class="brand-mark" aria-hidden="true">Z̷</span><span id="brand-text">zalgollo</span></a>
+      <nav aria-label="Primary">
+        <a href="#studio">Studio</a>
+        <a href="#recipes">Recipes</a>
+        <a href="#how">How it works</a>
+        <a href="#agents">Agents&nbsp;&amp;&nbsp;API</a>
+        <a href="https://github.com/Bit-Trading-Company/zalgollo" rel="noopener">GitHub</a>
+      </nav>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="shortcuts-btn" title="Keyboard shortcuts (?)" aria-label="Keyboard shortcuts">⌘</button>
+        <button class="icon-btn" id="theme-btn" title="Toggle theme" aria-label="Toggle light/dark theme">◐</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="hero-title">
+        <p class="hero-kicker"><span data-count-marks>2,103</span> combining marks · Unicode <span data-unicode>18</span> · nothing leaves your browser</p>
+        <h1 id="hero-title" class="hero-title" aria-label="Zalgollo"><span id="hero-glitch" aria-hidden="true">zalgollo</span></h1>
+        <p class="hero-sub">Glitch text, crafted on purpose. Paint marks onto letters, sketch silhouettes out of stacked accents, and reach for the forbidden corners of Unicode.</p>
+      </section>
+
+      <section id="studio" class="studio" aria-label="Studio">
+        <div class="studio-main">
+          <div class="stage-toolbar" role="toolbar" aria-label="Stage">
+            <div class="seg" role="radiogroup" aria-label="Pointer mode" id="mode-seg">
+              <button data-mode="edit" title="Select letters (V)">↖ Select</button>
+              <button data-mode="paint" title="Paint marks onto letters (P)">✎ Paint</button>
+              <button data-mode="erase" title="Erase marks (E)">⌫ Erase</button>
+              <button data-mode="move" title="Move layers (M)">✥ Move</button>
+            </div>
+            <div class="spacer"></div>
+            <button class="icon-btn" id="undo-btn" title="Undo (⌘Z)" aria-label="Undo">↶</button>
+            <button class="icon-btn" id="redo-btn" title="Redo (⇧⌘Z)" aria-label="Redo">↷</button>
+            <button class="btn toggle" id="boil-btn" aria-pressed="false" title="Animate: reroll marks every frame (B)">≋ Boil</button>
+            <button class="btn toggle" id="unleash-btn" aria-pressed="false" title="Let marks escape the stage">⇱ Unleash</button>
+            <div class="menu">
+              <button class="btn" aria-haspopup="true">Export ▾</button>
+              <div class="menu-pop" role="menu" hidden>
+                <button role="menuitem" data-export="png">Stage as PNG</button>
+                <button role="menuitem" data-export="txt">Text file (.txt)</button>
+                <button role="menuitem" data-export="html">Copy as HTML</button>
+                <button role="menuitem" data-export="all">Copy all layers</button>
+                <button role="menuitem" data-export="escaped">Copy as JS escapes</button>
+                <button role="menuitem" data-export="share">Copy share link</button>
+                <button role="menuitem" data-export="poster">Poster mode (hide UI)</button>
+              </div>
+            </div>
+            <button class="btn primary" id="copy-btn" title="Copy (C)">Copy</button>
+          </div>
+
+          <div class="stage-wrap" id="stage-wrap">
+            <div class="stage" id="stage" aria-label="Stage — your glitch text"></div>
+            <button class="poster-exit btn" id="poster-exit" hidden>Exit poster mode</button>
+          </div>
+
+          <div class="stats-bar" id="stats-bar" aria-live="polite"></div>
+
+          <div class="editor">
+            <label class="field-label" for="text-input">Text <span class="muted">— typing keeps your marks</span></label>
+            <textarea id="text-input" rows="2" spellcheck="false" autocomplete="off" placeholder="Type or paste — even existing zalgo text…"></textarea>
+            <div class="strip-head">
+              <span class="field-label">Letters <span class="muted" id="sel-label">— drag to select · double-click to inspect</span></span>
+              <div class="strip-actions">
+                <button class="btn small" id="sel-all">Select all</button>
+                <button class="btn small" id="sel-none">Clear selection</button>
+              </div>
+            </div>
+            <div class="strip" id="strip" role="listbox" aria-multiselectable="true" aria-label="Letters"></div>
+          </div>
+        </div>
+
+        <aside class="panel" aria-label="Tools">
+          <div class="tabs" role="tablist" id="tabs">
+            <button role="tab" data-tab="brush">Brush</button>
+            <button role="tab" data-tab="sketch">Sketch</button>
+            <button role="tab" data-tab="marks">Marks</button>
+            <button role="tab" data-tab="style">Style</button>
+            <button role="tab" data-tab="forbidden">Forbidden</button>
+            <button role="tab" data-tab="layers">Layers</button>
+            <button role="tab" data-tab="xray">X-ray</button>
+          </div>
+          <div class="tab-body" id="tab-brush" role="tabpanel"></div>
+          <div class="tab-body" id="tab-sketch" role="tabpanel" hidden></div>
+          <div class="tab-body" id="tab-marks" role="tabpanel" hidden></div>
+          <div class="tab-body" id="tab-style" role="tabpanel" hidden></div>
+          <div class="tab-body" id="tab-forbidden" role="tabpanel" hidden></div>
+          <div class="tab-body" id="tab-layers" role="tabpanel" hidden></div>
+          <div class="tab-body" id="tab-xray" role="tabpanel" hidden></div>
+        </aside>
+      </section>
+
+      <section id="recipes" class="recipes" aria-labelledby="recipes-title">
+        <h2 id="recipes-title">Recipes</h2>
+        <p class="lead">Every brush preset, ready to remix. Hover to boil, click to load it into the studio.</p>
+        <div class="recipe-grid" id="recipe-grid"></div>
+      </section>
+
+      <section id="how" class="how" aria-labelledby="how-title">
+        <h2 id="how-title">How glitch text works</h2>
+        <div class="how-grid">
+          <figure class="anatomy" aria-label="Anatomy of a glitched letter">
+            <div class="anatomy-glyph" id="anatomy-glyph"></div>
+            <ul class="anatomy-legend">
+              <li><b>Above</b> — marks with combining class 230 stack upward</li>
+              <li><b>Through</b> — overlays (class 1) strike the letter</li>
+              <li><b>Below</b> — class 220 marks hang down</li>
+              <li><b>Enclose</b> — circles, keycaps and diamonds wrap it</li>
+              <li><b>Bridge</b> — double marks reach the next letter</li>
+            </ul>
+          </figure>
+          <div class="how-text">
+            <h3>One letter, many code points</h3>
+            <p>Unicode lets any letter carry an unlimited number of <em>combining marks</em> — accents that don't take up space of their own. Fonts place each new mark further out, so piling on dozens builds towers that spill out of the line, over the text above and below, and sometimes out of the app itself. That's zalgo.</p>
+            <h3>Text as an object</h3>
+            <p>Zalgollo keeps your text as a list of letters, each with its own stack of marks sorted into zones. Edit the plain text and the marks stay put; paint, sketch or pick individual marks; the studio compiles it all back into a single string you can paste anywhere.</p>
+            <h3>Where does it work?</h3>
+            <p>Anywhere that accepts Unicode: Discord, X/Twitter, Instagram bios, TikTok, Reddit, Steam names, code comments. Some apps trim tall stacks or cap character counts — the stats bar shows code points and UTF-16 length so you can stay under limits.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="agents" class="agents" aria-labelledby="agents-title">
+        <h2 id="agents-title">For agents &amp; developers</h2>
+        <p class="lead">The same engine as an API, an MCP server and a Claude skill.</p>
+        <div class="agent-cards">
+          <article class="agent-card"><h3>MCP server</h3><pre class="code" data-copyable><code data-api>claude mcp add --transport http zalgollo __API__/mcp</code></pre><p class="muted small">Tools: <code>zalgo_text</code>, <code>style_text</code>, <code>clean_text</code>, <code>inspect_text</code>, <code>zalgo_options</code>.</p></article>
+          <article class="agent-card"><h3>Claude plugin</h3><pre class="code" data-copyable><code>/plugin marketplace add Bit-Trading-Company/zalgollo
+/plugin install zalgollo@zalgollo</code></pre></article>
+          <article class="agent-card"><h3>REST</h3><pre class="code" data-copyable><code data-api>curl "__API__/api/zalgo?text=hello&amp;preset=crown"</code></pre></article>
+          <article class="agent-card"><h3>JavaScript</h3><pre class="code" data-copyable><code>import { zalgo } from '@zalgollo/core';
+zalgo('hello', { preset: 'drip', seed: 7 });</code></pre></article>
+        </div>
+      </section>
+
+      <section class="faq" aria-labelledby="faq-title">
+        <h2 id="faq-title">Questions</h2>
+        <details><summary>Is zalgo text safe to paste?</summary><p>Yes — it is ordinary Unicode. Extremely tall stacks (hundreds of marks per letter) can make some apps slow to render; the stats bar shows the tallest stack so you can keep it reasonable.</p></details>
+        <details><summary>Why do some marks show as boxes?</summary><p>Not every font has every mark. The Marks tab can test your device and hide marks it can't draw. "Everything" and "Static" presets use them on purpose.</p></details>
+        <details><summary>How do I remove zalgo from text?</summary><p>Paste it into the X-ray tab and press Clean. It strips combining marks, invisible characters and folds styled alphabets back to plain letters.</p></details>
+        <details><summary>What is invisible ink?</summary><p>A message hidden in Unicode variation selectors or tag characters — invisible when displayed, but still in the text. X-ray reveals and removes it. Handy for watermarks and puzzles; be considerate about where you use it.</p></details>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p id="footer-glitch" class="footer-glitch" aria-hidden="true"></p>
+      <p class="footer-links">Browse: <a href="presets/">Zalgo presets</a> · <a href="styles/">Fancy text styles</a> · <a href="characters/">Invisible characters</a> · <a href="marks/">All 2,103 combining marks</a></p>
+      <p>Made by <a href="https://bit-trading-company.com/">Bit Trading Company</a> · sibling of <a href="https://bit-trading-company.com/figletto/">Figletto</a> · inspired by stAllio!'s glitch text generator · Unicode data © Unicode, Inc. · <a href="https://github.com/Bit-Trading-Company/zalgollo" rel="noopener">Source</a></p>
+    </footer>
+
+    <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+    <div class="popover" id="cell-pop" hidden></div>
+
+    <dialog id="shortcuts" class="dialog">
+      <h2>Keyboard shortcuts</h2>
+      <dl class="keys">
+        <dt><kbd>G</kbd></dt><dd>Glitch selection with the brush</dd>
+        <dt><kbd>R</kbd></dt><dd>Reroll marks (same shape, new marks)</dd>
+        <dt><kbd>X</kbd></dt><dd>Strip marks from selection</dd>
+        <dt><kbd>C</kbd></dt><dd>Copy</dd>
+        <dt><kbd>B</kbd></dt><dd>Boil (animate)</dd>
+        <dt><kbd>V</kbd> <kbd>P</kbd> <kbd>E</kbd> <kbd>M</kbd></dt><dd>Select · Paint · Erase · Move</dd>
+        <dt><kbd>A</kbd></dt><dd>Select all letters</dd>
+        <dt><kbd>Esc</kbd></dt><dd>Clear selection / leave field</dd>
+        <dt><kbd>⌘Z</kbd> <kbd>⇧⌘Z</kbd></dt><dd>Undo / redo</dd>
+        <dt><kbd>1</kbd>–<kbd>7</kbd></dt><dd>Switch tool tab</dd>
+      </dl>
+      <form method="dialog"><button class="btn primary">Got it</button></form>
+    </dialog>
+    <noscript><p class="noscript">Zalgollo needs JavaScript.</p></noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

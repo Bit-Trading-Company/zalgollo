@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "zalgollo": {
+      "type": "http",
+      "url": "https://zalgollo.vercel.app/mcp"
+    }
+  }
+}

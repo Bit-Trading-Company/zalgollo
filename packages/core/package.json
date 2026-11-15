@@ -1,0 +1,41 @@
+{
+  "name": "@zalgollo/core",
+  "version": "0.1.0",
+  "description": "Zalgollo core: craft glitch / zalgo text as an editable document of graphemes and combining marks, then compile it to Unicode.",
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./names": {
+      "types": "./dist/data/names.d.ts",
+      "default": "./dist/data/names.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node --test",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.19.2",
+    "typescript": "~5.9.3"
+  },
+  "keywords": [
+    "zalgo",
+    "glitch",
+    "unicode",
+    "combining",
+    "diacritics",
+    "text-art",
+    "mcp"
+  ]
+}

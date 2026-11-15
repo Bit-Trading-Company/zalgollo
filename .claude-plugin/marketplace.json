@@ -1,0 +1,20 @@
+{
+  "name": "zalgollo",
+  "owner": {
+    "name": "Bit Trading Company",
+    "url": "https://bit-trading-company.com"
+  },
+  "metadata": {
+    "description": "Glitch / zalgo text and Unicode text art for agents, via MCP + a skill."
+  },
+  "plugins": [
+    {
+      "name": "zalgollo",
+      "source": "./plugins/zalgollo",
+      "description": "Craft zalgo / glitch text and Unicode styled alphabets — skill + hosted MCP server.",
+      "version": "0.1.0",
+      "category": "productivity",
+      "keywords": ["zalgo", "glitch", "unicode", "text-art", "mcp"]
+    }
+  ]
+}

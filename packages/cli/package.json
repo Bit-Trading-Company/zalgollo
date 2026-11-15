@@ -1,0 +1,13 @@
+{
+  "name": "zalgollo",
+  "version": "0.1.0",
+  "description": "Glitch / zalgo text from the command line — presets, silhouettes, styled alphabets, clean and inspect.",
+  "license": "MIT",
+  "type": "module",
+  "bin": { "zalgollo": "bin/zalgollo.js" },
+  "files": ["bin"],
+  "dependencies": { "@zalgollo/core": "^0.1.0" },
+  "keywords": ["zalgo", "glitch", "unicode", "cli"],
+  "repository": { "type": "git", "url": "https://github.com/Bit-Trading-Company/zalgollo", "directory": "packages/cli" },
+  "homepage": "https://bit-trading-company.com/zalgollo/"
+}

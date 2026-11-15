@@ -5,6 +5,7 @@ import { $, download, esc, reducedMotion } from './ui';
 const stage = () => $('#stage');
 let boilFrame = 0;
 let boilDocs: Doc[] | null = null;
+let boilFrom: Doc[] = [];
 
 const cellHtml = (doc: Doc, sel: [number, number] | null, active: boolean) =>
   doc
@@ -89,9 +90,13 @@ export function setBoil(on: boolean) {
   if (!on || reducedMotion()) return renderStage();
   let last = 0;
   const tick = (t: number) => {
-    if (t - last > 85) {
+    if (t - last > 110) {
       last = t;
-      boilDocs = store.state.layers.map((l) => reroll(l.doc, { pool: pool() }));
+      // simmer: a share of marks changes each frame, so the piece keeps its silhouette
+      const layers = store.state.layers;
+      // restart from the real document whenever it was edited
+      boilDocs = layers.map((l, i) => reroll(boilFrom[i] === l.doc && boilDocs?.[i] ? boilDocs[i]! : l.doc, { pool: pool(), probability: 0.3 }));
+      boilFrom = layers.map((l) => l.doc);
       renderStage();
     }
     boilFrame = requestAnimationFrame(tick);
@@ -217,6 +222,8 @@ export async function exportPng() {
   const bg = BACKGROUNDS[store.state.bg] || css.getPropertyValue('--bg-2').trim() || '#0d0b12';
   paintBackground(ctx, bg, w, h);
   const themeText = css.getPropertyValue('--stage-text').trim() || '#f3eefa';
+  // make sure the zalgo-safe web fonts are loaded before drawing
+  await Promise.all(store.state.layers.map((l) => document.fonts.load(`${l.weight} ${l.size}px ${FONTS[l.font] ?? l.font}`, layerOutput(l)).catch(() => [])));
   for (const l of store.state.layers) {
     const lines = layerOutput(l).split('\n');
     ctx.save();

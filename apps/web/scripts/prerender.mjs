@@ -45,16 +45,16 @@ function page(rel, { title, description, body, jsonld }) {
     <style>
       .page { max-width: 1000px; margin: 0 auto; padding: 40px 20px; }
       .crumbs { font: 13px var(--mono); color: var(--muted); margin-bottom: 16px; } .crumbs a { color: var(--muted); }
-      .page h1 { font-size: clamp(30px, 4.5vw, 48px); letter-spacing: -0.035em; margin: 0 0 8px; }
+      .page h1 { font-family: var(--zalgo); font-size: clamp(30px, 4.5vw, 48px); letter-spacing: -0.035em; margin: 0 0 8px; }
       .sample { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; margin: 14px 0; padding: 14px 16px; display: flex; gap: 12px; align-items: center; overflow: hidden; }
-      .sample .t { flex: 1; font-size: 30px; line-height: 2.4; overflow: hidden; white-space: nowrap; }
+      .sample .t { flex: 1; font-family: var(--zalgo); font-size: 30px; line-height: 2.4; overflow: hidden; white-space: nowrap; }
       .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px; padding: 0; list-style: none; }
       .grid a { display: block; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); text-decoration: none; color: var(--text); }
       .grid a:hover { border-color: var(--hot); }
       .grid small { display: block; color: var(--muted); font-size: 12px; }
       table.marks { width: 100%; border-collapse: collapse; font-size: 13px; }
       table.marks td { border-bottom: 1px solid var(--line); padding: 4px 6px; }
-      table.marks td:first-child { font-size: 22px; width: 52px; text-align: center; cursor: copy; }
+      table.marks td:first-child { font-family: var(--zalgo); font-size: 22px; width: 52px; text-align: center; cursor: copy; }
       table.marks td.h { font-family: var(--mono); color: var(--cold); width: 80px; }
       table.marks td.z { color: var(--muted); width: 90px; }
       .cta { display: inline-block; margin: 12px 0; text-decoration: none; }

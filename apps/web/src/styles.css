@@ -1,4 +1,11 @@
 /* ───────────────────────── Zalgollo ───────────────────────── */
+/* Zalgo-safe fonts: Noto Sans/Serif/Mono merged with Noto Math, Symbols and Thai (scripts/build-fonts.py, OFL 1.1) */
+@font-face { font-family: 'Zalgollo Sans'; src: url('/fonts/zalgollo-sans-400.woff2') format('woff2'); font-weight: 100 599; font-display: swap; }
+@font-face { font-family: 'Zalgollo Sans'; src: url('/fonts/zalgollo-sans-800.woff2') format('woff2'); font-weight: 600 900; font-display: swap; }
+@font-face { font-family: 'Zalgollo Serif'; src: url('/fonts/zalgollo-serif-400.woff2') format('woff2'); font-weight: 100 599; font-display: swap; }
+@font-face { font-family: 'Zalgollo Serif'; src: url('/fonts/zalgollo-serif-800.woff2') format('woff2'); font-weight: 600 900; font-display: swap; }
+@font-face { font-family: 'Zalgollo Mono'; src: url('/fonts/zalgollo-mono-400.woff2') format('woff2'); font-weight: 100 900; font-display: swap; }
+
 :root {
   --mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
   --sans: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -6,6 +13,7 @@
   --radius-sm: 9px;
   --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
   --maxw: 1380px;
+  --zalgo: 'Zalgollo Sans', var(--sans);
 }
 [data-theme='dark'] {
   color-scheme: dark;
@@ -98,6 +106,7 @@ input[type='color'] { width: 36px; height: 30px; border: 1px solid var(--line-2)
   position: sticky; top: 0; z-index: 30; display: flex; align-items: center; gap: 24px; padding: 11px max(20px, calc((100vw - var(--maxw)) / 2));
   background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(14px) saturate(1.4); border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
 }
+.brand #brand-text { font-family: var(--zalgo); }
 .brand { display: flex; align-items: center; gap: 8px; color: var(--text); text-decoration: none; font: 800 19px/1 var(--sans); letter-spacing: -0.03em; }
 .brand-mark { color: var(--hot); font-size: 22px; text-shadow: 2px 0 var(--cold); }
 .topbar nav { display: flex; gap: 2px; }
@@ -109,8 +118,9 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 /* ───────── hero ───────── */
 .hero { text-align: center; padding: 70px 0 40px; position: relative; }
 .hero-kicker { font: 600 12px var(--mono); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0; }
-.hero-title { margin: 0; font-size: clamp(64px, 13vw, 168px); font-weight: 850; letter-spacing: -0.05em; line-height: 1; padding: 0.55em 0 0.45em; }
-#hero-glitch { display: inline-block; position: relative; text-shadow: -3px 0 var(--hot), 3px 0 var(--cold); animation: jitter 3.2s steps(1) infinite; }
+.hero-title { margin: 0; font-size: clamp(54px, 10.5vw, 136px); font-weight: 850; letter-spacing: -0.04em; line-height: 1; padding: 0.6em 0 0.75em; }
+#hero-glitch { display: inline-block; position: relative; font-family: var(--zalgo); text-shadow: -3px 0 var(--hot), 3px 0 var(--cold); cursor: default; }
+#hero-glitch.animating { animation: jitter 1.6s steps(1) infinite; }
 @keyframes jitter {
   0%, 92%, 100% { transform: none; text-shadow: -3px 0 var(--hot), 3px 0 var(--cold); }
   93% { transform: translate(4px, -2px) skewX(-6deg); text-shadow: -8px 0 var(--hot), 6px 0 var(--cold); clip-path: inset(10% 0 40% 0); }
@@ -171,7 +181,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .col:hover { background: var(--panel-2); }
 .col.sel { background: color-mix(in srgb, var(--hot) 16%, var(--panel)); border-color: color-mix(in srgb, var(--hot) 55%, transparent); }
 .col.nl { flex-basis: 18px; opacity: 0.5; }
-.col .ch { font: 600 19px/1 var(--sans); }
+.col .ch { font: 600 19px/1 var(--zalgo); }
 .col .ch.styled { color: var(--cold); }
 .bar { width: 10px; border-radius: 3px; align-self: end; background: linear-gradient(var(--hot), color-mix(in srgb, var(--hot) 40%, transparent)); transition: height 0.25s var(--ease); }
 .bar.down { align-self: start; background: linear-gradient(color-mix(in srgb, var(--cold) 40%, transparent), var(--cold)); }
@@ -207,22 +217,22 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .preset { text-align: left; border: 1px solid var(--line); background: var(--bg-2); border-radius: 10px; padding: 8px 10px 9px; cursor: pointer; overflow: hidden; transition: border-color 0.15s, transform 0.15s; }
 .preset:hover { border-color: var(--hot); transform: translateY(-1px); }
 .preset b { display: block; font-size: 12.5px; }
-.preset span { display: block; font-size: 17px; white-space: nowrap; line-height: 2.1; overflow: hidden; color: var(--stage-text); }
+.preset span { font-family: var(--zalgo); display: block; font-size: 17px; white-space: nowrap; line-height: 2.1; overflow: hidden; color: var(--stage-text); }
 
 .sketch-canvas { width: 100%; height: 200px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg-2); touch-action: none; cursor: crosshair; display: block; }
 .mark-search { width: 100%; }
 .mark-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 4px; }
 .mark-block { font: 700 11px var(--mono); color: var(--muted); grid-column: 1 / -1; margin: 6px 0 0; text-transform: uppercase; letter-spacing: 0.06em; }
-.mk { height: 42px; border: 1px solid var(--line); background: var(--bg-2); border-radius: 8px; cursor: pointer; font-size: 20px; line-height: 1; overflow: hidden; padding: 0; content-visibility: auto; contain-intrinsic-size: 38px 42px; }
+.mk { font-family: var(--zalgo); height: 42px; border: 1px solid var(--line); background: var(--bg-2); border-radius: 8px; cursor: pointer; font-size: 20px; line-height: 1; overflow: hidden; padding: 0; content-visibility: auto; contain-intrinsic-size: 38px 42px; }
 .mk:hover { border-color: var(--hot); background: var(--panel-2); }
 .mk.off { opacity: 0.22; }
 .mk.bad { border-style: dashed; }
 .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
-.style-btn { text-align: left; border: 1px solid var(--line); background: var(--bg-2); border-radius: 9px; padding: 6px 9px; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 14px; }
+.style-btn { font-family: var(--zalgo); text-align: left; border: 1px solid var(--line); background: var(--bg-2); border-radius: 9px; padding: 6px 9px; cursor: pointer; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 14px; }
 .style-btn small { display: block; font-size: 10.5px; color: var(--muted); font-family: var(--mono); }
 .style-btn:hover { border-color: var(--cold); }
 .monuments { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 4px; }
-.monuments button { height: 46px; font-size: 22px; border: 1px solid var(--line); background: var(--bg-2); border-radius: 8px; cursor: pointer; overflow: hidden; }
+.monuments button { font-family: var(--zalgo); height: 46px; font-size: 22px; border: 1px solid var(--line); background: var(--bg-2); border-radius: 8px; cursor: pointer; overflow: hidden; }
 .monuments button:hover { border-color: var(--acid); }
 .layer-list { display: grid; gap: 4px; }
 .layer-item { display: flex; gap: 6px; align-items: center; padding: 6px 8px; border: 1px solid var(--line); border-radius: 9px; cursor: pointer; background: var(--bg-2); }
@@ -242,7 +252,7 @@ main { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
 .cp-list { font: 12px var(--mono); display: grid; gap: 1px; max-height: 340px; overflow: auto; }
 .cp-g { border-top: 1px solid var(--line); padding: 4px 0; }
 .cp { display: grid; grid-template-columns: 28px 68px 1fr; gap: 6px; align-items: baseline; padding: 1px 2px; }
-.cp .g { font-size: 15px; text-align: center; font-family: var(--sans); }
+.cp .g { font-family: var(--zalgo); font-size: 15px; text-align: center; }
 .cp .h { color: var(--cold); }
 .cp .nm { color: var(--muted); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .cp.inv { background: color-mix(in srgb, var(--acid) 12%, transparent); }
@@ -256,11 +266,11 @@ textarea.paste { width: 100%; min-height: 70px; resize: vertical; font-size: 14p
 @keyframes pop { from { opacity: 0; transform: translateY(-4px) scale(0.98); } }
 .popover { position: fixed; z-index: 60; width: 320px; max-height: 420px; overflow: auto; background: var(--panel); border: 1px solid var(--line-2); border-radius: 14px; box-shadow: var(--shadow); padding: 12px; animation: pop 0.16s var(--ease); }
 .popover h4 { margin: 0 0 6px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
-.pop-glyph { font-size: 44px; text-align: center; line-height: 3; overflow: hidden; margin: 0 0 6px; background: var(--bg-2); border-radius: 10px; }
+.pop-glyph { font-family: var(--zalgo); font-size: 44px; text-align: center; line-height: 3; overflow: hidden; margin: 0 0 6px; background: var(--bg-2); border-radius: 10px; }
 .zone-row { display: grid; gap: 4px; margin: 8px 0; }
 .zone-row .field-label { margin: 0; }
 .mchips { display: flex; flex-wrap: wrap; gap: 4px; }
-.mchip { display: inline-flex; align-items: center; gap: 3px; border: 1px solid var(--line-2); border-radius: 7px; padding: 0 2px 0 6px; font-size: 16px; background: var(--bg-2); cursor: pointer; }
+.mchip { font-family: var(--zalgo); display: inline-flex; align-items: center; gap: 3px; border: 1px solid var(--line-2); border-radius: 7px; padding: 0 2px 0 6px; font-size: 16px; background: var(--bg-2); cursor: pointer; }
 .mchip:hover { border-color: #ff5f57; }
 .mchip i { font-style: normal; font-size: 11px; color: var(--muted); padding: 2px 3px; }
 .toast { position: fixed; left: 50%; bottom: 26px; z-index: 70; transform: translateX(-50%); background: var(--text); color: var(--bg); padding: 10px 16px; border-radius: 999px; font-weight: 650; font-size: 14px; box-shadow: var(--shadow); display: flex; gap: 10px; align-items: center; animation: toast-in 0.3s var(--ease); max-width: 90vw; }
@@ -283,12 +293,12 @@ h2 { font-size: clamp(26px, 3.2vw, 38px); letter-spacing: -0.035em; margin: 0 0 
   opacity: 0; transform: translateY(20px); }
 .recipe.in { opacity: 1; transform: none; transition: opacity 0.6s var(--ease), transform 0.6s var(--ease), border-color 0.2s, box-shadow 0.3s; }
 .recipe:hover { border-color: var(--hot); box-shadow: 0 0 30px var(--glow); }
-.recipe .art { font-size: 30px; font-weight: 700; display: grid; place-items: center; line-height: 1.6; white-space: nowrap; overflow: hidden; color: var(--stage-text); }
+.recipe .art { font-family: var(--zalgo); font-size: 30px; font-weight: 700; display: grid; place-items: center; line-height: 1.6; white-space: nowrap; overflow: hidden; color: var(--stage-text); }
 .recipe b { font-size: 14px; }
 .recipe p { margin: 2px 0 0; font-size: 12.5px; color: var(--muted); }
 .how-grid { display: grid; grid-template-columns: minmax(280px, 420px) 1fr; gap: 40px; align-items: center; }
 .anatomy { margin: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: 24px; }
-.anatomy-glyph { font: 700 120px/3 var(--sans); text-align: center; overflow: hidden; height: 300px; display: grid; place-items: center; color: var(--stage-text); }
+.anatomy-glyph { font: 700 120px/3 var(--zalgo); text-align: center; overflow: hidden; height: 300px; display: grid; place-items: center; color: var(--stage-text); }
 .anatomy-legend { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 4px; font-size: 13.5px; color: var(--muted); }
 .anatomy-legend b { color: var(--text); }
 .how-text h3 { margin: 18px 0 4px; font-size: 18px; }
@@ -303,7 +313,7 @@ h2 { font-size: clamp(26px, 3.2vw, 38px); letter-spacing: -0.035em; margin: 0 0 
 .faq summary { cursor: pointer; font-weight: 650; font-size: 16px; }
 .faq p { color: var(--muted); margin: 8px 0 0; }
 .footer { margin-top: 110px; padding: 40px 20px 50px; border-top: 1px solid var(--line); text-align: center; color: var(--muted); font-size: 13px; }
-.footer-glitch { font-size: 28px; font-weight: 800; line-height: 2.4; margin: 0; overflow: hidden; color: var(--line-2); }
+.footer-glitch { font-family: var(--zalgo); font-size: 28px; font-weight: 800; line-height: 2.4; margin: 0; overflow: hidden; color: var(--line-2); }
 .noscript { text-align: center; padding: 20px; }
 
 @media (max-width: 1080px) {

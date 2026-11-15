@@ -36,7 +36,7 @@ export function buildStyle() {
 
   root.replaceChildren(
     section('Alphabets — applies to selection or all', grid),
-    h('p', { class: 'hint' }, 'Heads-up: styled letters live in math and symbol fonts, which carry few combining marks. Heavily stacked styled letters may show as boxes on some devices — keep stacks light, or use the Classic set.'),
+    h('p', { class: 'hint' }, 'The studio renders in Zalgollo Sans/Serif/Mono — merged fonts that carry these alphabets and their marks together. Other apps use their own fonts, where heavily stacked styled letters can show as boxes; keep stacks light if it must render everywhere.'),
     section(
       'Scramble — swap letters for random characters (marks stay)',
       blockChips,

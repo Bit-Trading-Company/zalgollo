@@ -1,5 +1,5 @@
 import { compile, parse } from '@zalgollo/core';
-import { BACKGROUNDS, FONTS, newLayer, store, type Layer } from './state';
+import { BACKGROUNDS, FONTS, FONT_LABELS, newLayer, store, type Layer } from './state';
 import { $, h, section, slider } from './ui';
 
 export function buildLayers() {
@@ -41,7 +41,7 @@ export function buildLayers() {
     store.set({ layers, active: layers.length - 1, sel: null }, { history: true });
   };
 
-  const font = h('select', {}, ...Object.keys(FONTS).map((k) => h('option', { value: k }, k[0]!.toUpperCase() + k.slice(1))));
+  const font = h('select', {}, ...Object.keys(FONTS).map((k) => h('option', { value: k }, FONT_LABELS[k] ?? k)));
   font.addEventListener('change', () => store.patchLayer({ font: font.value }));
   const color = h('input', { type: 'color' });
   color.addEventListener('input', () => store.patchLayer({ color: color.value }, 'color'));

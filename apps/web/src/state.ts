@@ -1,4 +1,10 @@
-import { bidi, cloneDoc, compile, glitch, hideInk, parse, seeded, weave, type Doc, type PoolSpec, type Range, type Zone } from '@zalgollo/core';
+import { MARKS, bidi, cloneDoc, compile, glitch, hideInk, parse, seeded, weave, type Doc, type PoolSpec, type Range, type Zone } from '@zalgollo/core';
+import coverage from './font-coverage.json';
+
+/** Marks the Zalgollo fonts can't draw — left out of the pool while "zalgo-safe" is on. */
+const COVERED = new Set<number>(coverage.marks);
+export const UNCOVERED: number[] = MARKS.filter((m) => m.zone !== 'invisible' && !COVERED.has(m.cp)).map((m) => m.cp);
+export const isCovered = (cp: number) => COVERED.has(cp);
 
 export interface Finish {
   weave: string; // 'none' | INVISIBLES key
@@ -52,17 +58,37 @@ export interface State {
   tab: string;
   bg: string;
   sketch: { max: number; mirror: boolean };
+  /** Only use marks the Zalgollo fonts can draw. */
+  fontSafe: boolean;
 }
 
+const SYS_SANS = "ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif";
+/**
+ * Stage fonts. The first three are Zalgollo's own merged Noto fonts, which carry every mark the
+ * studio uses (see scripts/build-fonts.py). The rest are system fonts — characterful, but they
+ * may draw unsupported marks as boxes.
+ */
 export const FONTS: Record<string, string> = {
-  sans: "ui-sans-serif, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-  serif: "Georgia, 'Times New Roman', 'Noto Serif', serif",
-  mono: "ui-monospace, Menlo, Consolas, 'DejaVu Sans Mono', monospace",
+  sans: `'Zalgollo Sans', ${SYS_SANS}`,
+  serif: "'Zalgollo Serif', Georgia, 'Times New Roman', serif",
+  mono: "'Zalgollo Mono', ui-monospace, Menlo, Consolas, monospace",
+  system: SYS_SANS,
   impact: "Impact, 'Haettenschweiler', 'Arial Narrow Bold', 'Franklin Gothic Bold', sans-serif",
   rounded: "ui-rounded, 'SF Pro Rounded', 'Nunito', 'Arial Rounded MT Bold', sans-serif",
   condensed: "'Avenir Next Condensed', 'Roboto Condensed', 'Arial Narrow', sans-serif",
   hand: "'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive",
   gothic: "'UnifrakturMaguntia', 'Old English Text MT', 'Blackletter', fantasy",
+};
+export const FONT_LABELS: Record<string, string> = {
+  sans: 'Zalgollo Sans (zalgo-safe)',
+  serif: 'Zalgollo Serif (zalgo-safe)',
+  mono: 'Zalgollo Mono (zalgo-safe)',
+  system: 'System sans',
+  impact: 'Impact (system)',
+  rounded: 'Rounded (system)',
+  condensed: 'Condensed (system)',
+  hand: 'Hand (system)',
+  gothic: 'Gothic (system)',
 };
 
 export const BACKGROUNDS: Record<string, string> = {
@@ -132,6 +158,7 @@ function initial(): State {
     tab: prefs.tab ?? 'brush',
     bg: prefs.bg ?? 'theme',
     sketch: prefs.sketch ?? { max: 16, mirror: false },
+    fontSafe: prefs.fontSafe ?? true,
   };
 }
 
@@ -214,7 +241,7 @@ function persist() {
   persistTimer = setTimeout(() => {
     const s = store.state;
     try {
-      localStorage.setItem('zalgollo:prefs', JSON.stringify({ brush: s.brush, sets: s.sets, exclude: s.exclude, tab: s.tab, bg: s.bg, sketch: s.sketch }));
+      localStorage.setItem('zalgollo:prefs', JSON.stringify({ brush: s.brush, sets: s.sets, exclude: s.exclude, tab: s.tab, bg: s.bg, sketch: s.sketch, fontSafe: s.fontSafe }));
       localStorage.setItem('zalgollo:work', JSON.stringify(serialize(s)));
     } catch {}
   }, 400);
@@ -222,7 +249,11 @@ function persist() {
 
 // ── selection & pool helpers ─────────────────────────────────────
 export const range = (): Range | undefined => store.state.sel ?? undefined;
-export const pool = (): PoolSpec => ({ sets: store.state.sets, exclude: store.state.exclude, native: store.state.brush.native });
+export const pool = (): PoolSpec => ({
+  sets: store.state.sets,
+  exclude: store.state.fontSafe ? [...store.state.exclude, ...UNCOVERED] : store.state.exclude,
+  native: store.state.brush.native,
+});
 
 // ── output ───────────────────────────────────────────────────────
 export function finishText(text: string, f: Finish): string {

@@ -19,6 +19,8 @@ export interface ZalgoOptions {
   /** Mark sets (see MARK_SETS) — overrides the preset's. */
   sets?: string[];
   native?: boolean;
+  /** Marks never to use (e.g. ones your fonts can't draw). */
+  exclude?: number[];
   /** Sketch a silhouette: shape name (see SHAPES) with heights for above/below. */
   shape?: { name: string; above?: number; below?: number; seed?: number };
   /** Styled alphabet for the base letters (see STYLES). */
@@ -50,7 +52,7 @@ export function zalgoDoc(input: string | Doc, o: ZalgoOptions = {}): ZalgoResult
   if (o.scramble) doc = scramble(doc, { ...o.scramble, rng });
   const preset = PRESETS[o.preset ?? (o.shape ? '' : 'classic')];
   if (o.preset && !preset) throw new Error(`Unknown preset "${o.preset}". Available: ${Object.keys(PRESETS).join(', ')}`);
-  const pool: PoolSpec = { ...preset?.pool, ...(o.sets ? { sets: o.sets } : {}), ...(o.native != null ? { native: o.native } : {}) };
+  const pool: PoolSpec = { ...preset?.pool, ...(o.sets ? { sets: o.sets } : {}), ...(o.native != null ? { native: o.native } : {}), ...(o.exclude ? { exclude: o.exclude } : {}) };
   const k = o.intensity ?? 1;
   const counts = Object.fromEntries(Object.entries({ ...preset?.counts, ...o.counts }).map(([z, n]) => [z, (n ?? 0) * k])) as Counts;
   if (Object.values(counts).some(Boolean)) {

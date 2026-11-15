@@ -74,12 +74,18 @@ to agents: they stay in the human-driven studio. Agents get the inverse instead:
 Extending is a one-line change in a registry: `MARK_SETS`, `PRESETS`, `SHAPES`, `INVISIBLES`, `BLANKS`,
 `FONTS`/`BACKGROUNDS` (web), panel tabs, MCP tools.
 
-## Rendering notes
+## Zalgo-safe fonts
 
-Browsers shape a letter and all its marks with **one font**. System UI fonts only cover the classic
-U+0300–036F block, so that is the default pool. Other sets render as boxes on many devices once mixed (that
-is part of the fun in the Static/Chaos presets), and the Marks tab can test your device and exclude what it
-can't draw. For the same reason, styled math alphabets plus heavy stacks often fail together.
+Browsers shape a letter and all its marks with **one font**; if that font lacks any mark in the
+stack, the cluster breaks into boxes. System UI fonts only cover U+0300–036F, so the studio ships its own
+fonts: **Zalgollo Sans / Serif / Mono**, built by \`scripts/build-fonts.py\` by merging Noto Sans/Serif/Mono
+with Noto Sans Math (symbol marks, math alphabets), Noto Sans Symbols (circled/squared letters),
+Noto Sans Symbols 2 (Braille) and Noto Sans Thai, then subsetting to WOFF2 (~240 KB each, SIL OFL 1.1).
+The build also writes \`apps/web/src/font-coverage.json\`; while **Zalgo-safe** is on (Marks tab, default),
+the random pool only uses the 318 marks these fonts can draw. Turn it off for deliberate chaos.
+
+Pasted text is rendered by the destination app's fonts, so the API and presets default to the classic
+block, which every font covers.
 
 ## Development
 
@@ -88,6 +94,7 @@ npm install
 npm run dev          # studio on http://localhost:5173/zalgollo/
 npm run dev:api      # API + MCP on http://localhost:3000
 npm run unicode      # refresh Unicode tables (downloads the UCD once)
+# rebuild fonts: python3 -m venv .venv && .venv/bin/pip install fonttools brotli && .venv/bin/python scripts/build-fonts.py
 npm run build && npm test
 ```
 

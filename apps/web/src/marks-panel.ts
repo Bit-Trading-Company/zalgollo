@@ -1,6 +1,7 @@
 import { MARKS, MARK_SETS, ZONE_INFO, addMark, describe, resolvePool, type Zone } from '@zalgollo/core';
 import { flashCells } from './stage';
-import { FONTS, pool, range, store } from './state';
+import { FONTS, FONT_LABELS, isCovered, pool, range, store } from './state';
+import { check } from './ui';
 import { $, chip, h, section, toast } from './ui';
 
 let unsupported = new Set<number>();
@@ -126,24 +127,28 @@ export function buildMarks() {
       const visible = (zone === 'all' || m.zone === zone) && (show === 'all' || inPool.has(m.cp)) && (!query || describe(m.cp).name.includes(query) || describe(m.cp).hex.includes(query));
       t.hidden = !visible;
       t.classList.toggle('off', ex.has(m.cp) || (show === 'all' && !inPool.has(m.cp)));
-      t.classList.toggle('bad', unsupported.has(m.cp));
+      t.classList.toggle('bad', unsupported.has(m.cp) || (m.zone !== 'invisible' && !isCovered(m.cp)));
     }
     for (const hd of headers) hd.el.hidden = hd.cps.every((cp) => tiles.get(cp)!.hidden);
   };
 
   const deviceBtn = h('button', {
     class: 'btn',
-    onClick: () => {
+    onClick: async () => {
+      const l = store.layer();
+      await document.fonts.load(`${l.weight} 40px ${FONTS[l.font] ?? l.font}`, 'o\u0301').catch(() => []);
       unsupported = testDevice();
       filter();
-      toast(`${unsupported.size} marks can't be drawn by this device's fonts`);
+      toast(`${unsupported.size} marks can't be drawn in ${FONT_LABELS[store.layer().font] ?? 'this font'}`);
       excludeBtn.hidden = !unsupported.size;
     },
   }, 'Test my device');
   const excludeBtn = h('button', { class: 'btn', hidden: true, onClick: () => store.set({ exclude: [...new Set([...store.state.exclude, ...unsupported])] }) }, 'Exclude unsupported');
 
+  const safe = check('Zalgo-safe: only marks the Zalgollo fonts can draw', store.state.fontSafe, (v) => store.set({ fontSafe: v }), 'Turn off for deliberate chaos — other marks may render as boxes');
   root.replaceChildren(
     section('Mark sets in the pool', setChips),
+    safe,
     summary,
     h('div', { class: 'row' }, deviceBtn, excludeBtn, h('button', { class: 'btn', onClick: () => store.set({ exclude: [] }) }, 'Reset exclusions')),
     search,
@@ -158,7 +163,7 @@ export function buildMarks() {
   renderSegs();
   filter();
   store.subscribe((_s, changed) => {
-    if (changed.has('sets') || changed.has('exclude') || changed.has('brush')) {
+    if (changed.has('sets') || changed.has('exclude') || changed.has('brush') || changed.has('fontSafe')) {
       renderSets();
       renderSummary();
       filter();

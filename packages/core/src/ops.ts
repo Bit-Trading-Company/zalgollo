@@ -107,8 +107,11 @@ export function shape(doc: Doc, o: ShapeOptions): Doc {
   return out;
 }
 
-/** Replace every mark with a different random mark from the same zone (same silhouette, new texture). */
-export function reroll(doc: Doc, o: Common & { pool?: PoolSpec } = {}): Doc {
+/**
+ * Replace marks with random marks from the same zone (same silhouette, new texture).
+ * `probability` < 1 rerolls only a share of marks — a gentle simmer for animations.
+ */
+export function reroll(doc: Doc, o: Common & { pool?: PoolSpec; probability?: number } = {}): Doc {
   const rng = o.rng ?? Math.random;
   const spec = o.pool ?? {};
   const pool = resolvePool(spec);
@@ -117,6 +120,7 @@ export function reroll(doc: Doc, o: Common & { pool?: PoolSpec } = {}): Doc {
   for (let i = a; i < b; i++) {
     const cell = out[i]!;
     cell.marks = cell.marks.map((m) => {
+      if (o.probability != null && rng() > o.probability) return m;
       const choices = poolFor(cell, spec, pool, zoneOf(m));
       return choices.length ? pick(rng, choices) : m;
     });
@@ -202,3 +206,18 @@ export function heights(doc: Doc, zone: Zone, range?: Range): number[] {
 }
 
 export const visibleZones = VISIBLE_ZONES;
+
+/** The first `k` (0–1) of every zone's stack — grows a finished piece from bare letters. */
+export function grow(doc: Doc, k: number): Doc {
+  return doc.map((c) => {
+    const seen: Partial<Record<Zone, number>> = {};
+    const total: Partial<Record<Zone, number>> = {};
+    for (const m of c.marks) total[zoneOf(m)] = (total[zoneOf(m)] ?? 0) + 1;
+    const marks = c.marks.filter((m) => {
+      const z = zoneOf(m);
+      seen[z] = (seen[z] ?? 0) + 1;
+      return seen[z]! <= Math.round(total[z]! * k);
+    });
+    return { ...c, marks };
+  });
+}

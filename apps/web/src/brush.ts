@@ -1,6 +1,6 @@
 import { PRESETS, SHAPES, glitch, heights, reroll, seeded, shape, shapeHeights, strip, zalgo, type Zone } from '@zalgollo/core';
 import { flashCells } from './stage';
-import { pool, range, store, type Brush } from './state';
+import { UNCOVERED, pool, range, store, type Brush } from './state';
 import { $, check, chip, h, section, slider } from './ui';
 
 type CountZone = keyof Brush['counts'];
@@ -98,7 +98,7 @@ export function buildBrush() {
           },
         },
         h('b', {}, p.label),
-        h('span', {}, zalgo('Glitch', { preset: key, seed: 11 })),
+        h('span', {}, zalgo('Glitch', { preset: key, seed: 11, exclude: UNCOVERED })),
       ),
     ),
   );
